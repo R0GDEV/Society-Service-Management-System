@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Request</title>
+    <style>
+      body{
+        background: radial-gradient(ellipse at bottom, #16181a 0%, #0b1442 100%);
+      }
+
+        h1{
+            color: #ffffff;
+           padding-top: 1rem;
+        }
+        .wrapper {
+            
+            max-width: 80rem;
+            margin: 0 auto;
+            margin-top: 6%;
+           
+        }
+       #dialog {
+            padding: 1rem 1.8rem;
+           background-color: ghostwhite;
+           
+            width: 25% auto;
+            min-height: 25% auto;
+            border-radius: 0.45em;
+            border: 0;
+            box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+           
+            margin-bottom: 20px;
+        
+        }
+        
+        ul>*+* {
+            margin-top: 1rem;
+        }
+
+        li {
+            break-inside: avoid;
+        }
+
+        ::marker {
+            content: counters(list-item, '') ': ';
+            font-weight: 700;
+            font-size: 2em;
+            color:ghostwhite;
+        }
+
+        li span {
+            display: block;
+        }
+
+        li span:first-child {
+            font-size: 1.5em;
+        }
+
+        li span:last-child {
+            font-style: italic;
+        }
+        #data {
+            padding: 1.5rem 1.5rem 1.5rem 4em;
+            border: 0.3rem solid #6b6b6b;
+            background: radial-gradient(ellipse at bottom, #5df3f8 0%, #455396 100%);
+            columns: 25rem;
+            column-gap: 7rem;
+            column-rule: 4px dotted rgb(0, 5, 77);
+            border-radius: 0.5rem;
+           
+        }
+        .list{
+            padding-bottom: 20rem;
+            margin-bottom: 200px;
+        }
+    </style>
+    <script>
+        
+    </script>
+</head>
+
+
+
+<body>
+    <%- include('nav_bar'); -%>
+    <div class="wrapper">
+    <h1>Maintenance Request</h1>
+    <div id="dialog">
+    <form action="/MaintenanRequest" method="POST">
+       <label for="room_no">Room Number</label><br>
+        <textarea id="room_no" name="room_no" rows="1" cols="5"  minlength="3" maxlength="5" required></textarea><br><br>
+        <label for="issueType">Issue Type:</label>
+        <select id="issueType" name="issueType">
+            <option value="Electrical">Electrical</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="General Maintenance">General Maintenance</option>
+            <option value="HVAC">HVAC (Heating, Ventilation, and Air Conditioning)</option>
+            <option value="Appliance Repair">Appliance Repair</option>
+            <option value="Painting">Painting</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="Pest Control">Pest Control</option>
+            <option value="Landscaping">Landscaping</option>
+            <option value="Security">Security</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit Request">
+        
+       
+
+    </form>
+</div>
+<% if (isAdmin) { %>
+   
+  
+<h1>Resolve Request</h1>
+<div class="list">
+    <ul id="data">
+        <% Maintenan.forEach(notice=> { %>
+            <li>
+                <span><strong>Description:</strong>
+                    <%= notice.description %>
+                </span>
+                <span><strong>Type:</strong>
+                    <%= notice.Type %>
+                </span>
+                <span><strong>Name:</strong>
+                    <%= notice.username %>
+                </span>
+                <span><strong>Flat No. :</strong>
+                        <%= notice.Room_no %>
+                </span>
+                <span><strong>Status:</strong>
+                    <%= notice.status %>
+            </span>
+            </li>
+
+            <% }); %>
+    </ul>
+</div>
+<% } %>
+</div>
+</body>
+
+</html>

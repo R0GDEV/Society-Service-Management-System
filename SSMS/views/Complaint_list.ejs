@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Complanint</title>
+</head>
+
+<body>
+  <style>
+    body {
+      margin: 0 auto;
+      background-color: black;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pad: clamp(1rem, 2vw, 3rem);
+    }
+
+    dialog {
+      padding: 1rem 1.8rem;
+      justify-content: center;
+      background: ghostwhite;
+      width: 30%;
+      min-height: 25%;
+      border-radius: 0.45em;
+      border: 0;
+      box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+      animation: fadeIn 1s ease both;
+
+      &::backdrop {
+        animation: fadeIn 1s ease both;
+        background: rgba(65, 64, 64, 0.4);
+        z-index: 2;
+        backdrop-filter: blur(20px);
+      }
+    }
+
+    .x {
+      filter: grayscale(1);
+      border: none;
+      background: none;
+      position: absolute;
+      top: 15px;
+      right: 10px;
+      transition: ease filter, transform 0.3s;
+      cursor: pointer;
+      transform-origin: center;
+
+      &:hover {
+        filter: grayscale(0);
+        transform: scale(1.1);
+      }
+    }
+
+    .wrapper {
+      max-width: 80rem;
+      margin: 0 auto;
+      margin-top: 6%;
+    }
+
+    .wrapper>*+* {
+      margin-top: var(--pad);
+    }
+
+    .list {
+      list-style: none;
+      padding: 1.5rem;
+      border: 0.3rem solid turquoise;
+      columns: 25rem;
+      column-gap: calc(var(--pad) * 2);
+      column-rule: 0.2rem dotted turquoise;
+      border-radius: 0.5rem;
+    }
+
+    .list li {
+      --y: calc(100% - 2rem);
+      display: grid;
+      grid-template-columns: minmax(3.75em, auto) 1fr;
+      gap: 0 1.5em;
+      break-inside: avoid;
+      page-break-inside: avoid;
+      background: radial-gradient(circle at 30% var(--y), rgb(50 50 50), rgb(0 0 0));
+      color: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0.25rem 0.25rem 0.5rem rgb(0 0 0 / 0.17)
+    }
+
+    li+li {
+      margin-top: 1rem;
+    }
+
+
+    .list li::before {
+      counter-increment: list-item 1;
+      content: counter(list-item);
+      font-weight: 700;
+      font-size: 4.5em;
+      letter-spacing: -0.125em;
+      line-height: 1;
+      color: turquoise;
+      grid-column: 1;
+      grid-row: span 2;
+      align-self: end;
+      margin: 0 0 -0.05em -0.1em;
+    }
+
+    li span {
+      grid-column: 2;
+    }
+
+    li span:first-of-type {
+      font-size: 1.5em;
+      padding-top: 1rem;
+    }
+
+    li span:last-of-type {
+      font-style: italic;
+      padding-bottom: 1rem;
+    }
+
+    .divider {
+      background: lavender;
+      min-height: 6rem;
+      padding: var(--pad) 0;
+      width: 100vw;
+      margin-left: 50%;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+
+    .divider *+* {
+      margin: 1.5rem 0 0 0;
+    }
+
+    #text_a {
+      color: aqua;
+      font-size: 0.8rem;
+    }
+
+    h1 {
+      color: ghostwhite
+    }
+
+    @import url("https://fonts.googleapis.com/css?family=Raleway");
+
+    :root {
+      --glow-color: hsl(186 100% 69%);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+
+
+    .glowing-btn {
+      position: relative;
+      color: var(--glow-color);
+      height: 50px;
+      cursor: pointer;
+      padding: 0.35em 1em;
+      border: 0.15em solid var(--glow-color);
+      border-radius: 0.45em;
+      background: none;
+      perspective: 2em;
+      font-family: "Raleway", sans-serif;
+      font-size: 1em;
+      font-weight: 900;
+      letter-spacing: 1em;
+      margin-top: 1%;
+      margin-bottom: 3%;
+      -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      animation: border-flicker 2s linear infinite;
+    }
+
+    .glowing-txt {
+      float: left;
+      margin-right: -0.8em;
+      -webkit-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+        0 0 0.45em var(--glow-color);
+      -moz-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+        0 0 0.45em var(--glow-color);
+      text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em var(--glow-color);
+      animation: text-flicker 3s linear infinite;
+    }
+
+    .faulty-letter {
+      opacity: 0.5;
+      animation: faulty-flicker 2s linear infinite;
+    }
+
+    .glowing-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0.7;
+      filter: blur(1em);
+      transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+      background: var(--glow-color);
+      pointer-events: none;
+    }
+
+    .glowing-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      z-index: -1;
+      background-color: var(--glow-color);
+      box-shadow: 0 0 2em 0.2em var(--glow-color);
+      transition: opacity 100ms linear;
+    }
+
+    .glowing-btn:hover {
+      color: rgba(0, 0, 0, 0.8);
+      text-shadow: none;
+      animation: none;
+    }
+
+    .glowing-btn:hover .glowing-txt {
+      animation: none;
+    }
+
+    .glowing-btn:hover .faulty-letter {
+      animation: none;
+      text-shadow: none;
+      opacity: 1;
+    }
+
+    .glowing-btn:hover:before {
+      filter: blur(1.5em);
+      opacity: 1;
+    }
+
+    .glowing-btn:hover:after {
+      opacity: 1;
+    }
+
+    @keyframes faulty-flicker {
+      0% {
+        opacity: 0.1;
+      }
+
+      2% {
+        opacity: 0.1;
+      }
+
+      4% {
+        opacity: 0.5;
+      }
+
+      19% {
+        opacity: 0.5;
+      }
+
+      21% {
+        opacity: 0.1;
+      }
+
+      23% {
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 0.5;
+      }
+
+      83% {
+        opacity: 0.4;
+      }
+
+      87% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes text-flicker {
+      0% {
+        opacity: 0.1;
+      }
+
+      2% {
+        opacity: 1;
+      }
+
+      8% {
+        opacity: 0.1;
+      }
+
+      9% {
+        opacity: 1;
+      }
+
+      12% {
+        opacity: 0.1;
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      25% {
+        opacity: 0.3;
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      70% {
+        opacity: 0.7;
+      }
+
+      72% {
+        opacity: 0.2;
+      }
+
+      77% {
+        opacity: 0.9;
+      }
+
+      100% {
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes border-flicker {
+      0% {
+        opacity: 0.1;
+      }
+
+      2% {
+        opacity: 1;
+      }
+
+      4% {
+        opacity: 0.1;
+      }
+
+      8% {
+        opacity: 1;
+      }
+
+      70% {
+        opacity: 0.7;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      .glowing-btn {
+        font-size: 1em;
+      }
+    }
+
+    .btn {
+      margin-top: 2%;
+
+    }
+
+    label {
+      font-size: 1.2em;
+      font-weight: 900;
+      margin: 2% 0 2% 0;
+    }
+
+    input {
+      width: 20rem;
+    }
+  </style>
+  <%- include('nav_bar'); -%>
+
+    <dialog id="dialog">
+      <form action="/Complanint" id="addn" method="post">
+        <label>Type:</label><br>
+        <input type="text" id="issueType" name="issueType"><br>
+        <label>Description:</label><br>
+        <input type="text" id="description" name="description"><br>
+        <button class="btn" type="submit">ADD</button>
+        <button onclick="window.dialog.close();" aria-label="close" class="x" type="button">❌</button>
+      </form>
+    </dialog>
+    <div class="wrapper">
+      <h1>Complaint Board</h1>
+      <button class='glowing-btn primary' onclick="window.dialog.showModal();"><span class='glowing-txt'>C<span
+            class='faulty-letter'>L</span>ICK</span></button>
+
+      <span id="text_a">*Add New Complaint</span>
+
+      <ol class="list">
+        <% Complanint.forEach(booking=> { %>
+          <li>
+            <span>
+              <strong>Complaint:</strong>
+              <%= booking.Complaint %>
+            </span>
+            <span><strong>Type:</strong>
+              <%= booking.type %>
+            </span>
+            <span><strong>By</strong>
+              <%= booking.username %>
+            </span>
+            <span><strong>Status :</strong>
+              <%= booking.status%>
+            </span>
+            <% if (isAdmin) { %>
+              <span>
+                <button onclick="changestatus('<%= booking._id %>')">Resolve</button></span></span>
+              <% } %>
+          </li>
+          <% }); %>
+      </ol>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      function changestatus(id) {
+        console.log(id);
+        $.ajax({
+          url: '/complaint/' + id,
+          type: 'PUT',
+          success: function (response) {
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+          }
+        });
+      }
+
+    </script>
+</body>

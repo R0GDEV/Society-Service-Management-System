@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+   <style>
+        
+        body {
+            margin: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgb(0, 0, 0), rgb(13, 0, 133), rgba(40, 2, 255, 0.479));
+
+        }
+        a {
+            color: inherit;
+        }
+     
+        .wrapper {
+            max-width: 80rem;
+            margin-top: 6%;
+            margin: 0 auto;
+          
+
+       
+           
+        }
+        #data {
+           
+            background-color: ghostwhite;
+            padding: 1.5rem 1.5rem 1.5rem 4em;
+            border: 0.3rem solid #40e0d0;
+            columns: 25rem;
+            column-gap: 7rem;
+            column-rule: 4px dotted turquoise;
+            border-radius: 0.5rem;
+          
+        }
+
+        ul>*+* {
+            margin-top: 1rem;
+        }
+
+        li {
+            break-inside: avoid;
+          
+            color: rgb(12, 12, 12);
+        }
+
+        ::marker {
+            content: counters(list-item, '') ': ';
+            font-weight: 700;
+            font-size: 1.5em;
+            color: turquoise;
+        }
+
+        li span {
+            font-family: "Comfortaa", sans-serif;
+            display: block;
+        }
+
+        li span:first-child {
+            font-size: 1.5em;
+        }
+
+       
+        #addn {
+            font-size: 1.2rem;
+            padding-bottom: 1rem;
+            padding-top: 1.5rem;
+        }
+
+        #description {
+            margin: 10px 0 10px 0;
+        }
+
+        dialog {
+            padding: 1rem 1.8rem;
+            background: white;
+            min-width: 50%;
+            min-height: 25%;
+            border-radius: 15px;
+            border: 0;
+            box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+            animation: fadeIn 1s ease both;
+
+            &::backdrop {
+                animation: fadeIn 1s ease both;
+                background: rgb(255 255 255 / 40%);
+                z-index: 2;
+                backdrop-filter: blur(20px);
+            }
+        }
+
+        .x {
+            filter: grayscale(1);
+            border: none;
+            background: none;
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            transition: ease filter, transform 0.3s;
+            cursor: pointer;
+            transform-origin: center;
+
+            &:hover {
+                filter: grayscale(0);
+                transform: scale(1.1);
+            }
+        }
+
+        #editNoticeForm {
+            visibility: hidden;
+            position: fixed;
+            top: 0;
+            margin: 15% auto;
+        }
+
+        #editNoticeForm.active {
+            align-items: center;
+            padding: 20px;
+            opacity: 1;
+            visibility: visible;
+            transition: .3s;
+            background-color: #fefefe;
+            margin: 15% auto;
+        }
+
+        .edit-content {
+            margin: 15% auto;
+            width: 50%;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .modal-content {
+            transition: .3s;
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 1.2em;
+            font-weight: 900;
+            margin: 2% 0 2% 0;
+        }
+
+        button {
+            font-size: 1.2em;
+
+        }
+
+        input {
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 30px;
+       
+        }
+    
+    </style>
+</head>
+
+<body>
+    <%- include('nav_bar'); -%>
+        <br><br>
+
+        <div class="wrapper">
+            <h1>Notice Board</h1>
+
+
+            <% if (isAdmin) { %>
+                <button class="primary" onclick="window.dialog.showModal();">
+                    ADD Notices
+                </button>
+                <% } %>
+
+                    <h1>Notice List</h1>
+
+                    <dialog id="dialog">
+                        <form action="/notices" id="addn" method="post">
+                            <label>Description:</label><br>
+                            <input type="text" id="description" name="description" style="width: 50%;"><br>
+                            <button type="submit">ADD</button>
+                            <button onclick="window.dialog.close();" aria-label="close" class="x"
+                                type="button">❌</button>
+                        </form>
+                    </dialog>
+
+
+                    <ul id="data" class="list">
+                        <% notices.forEach(notice=> { %>
+                            <li>
+                                <span><strong>Description:</strong>
+                                    <%= notice.description %>
+                                </span>
+                                <span><strong>Date:</strong>
+                                    <%= notice.date %>
+                                </span>
+                                <% if (isAdmin) { %>
+
+                                    <span>
+                                        <button onclick="confirmDelete('<%= notice._id %>')">Delete Notice</button>
+                                    </span>
+                                    <% } %>
+                            </li>
+                            <% }); %>
+                    </ul>
+
+                    <!-- Modal for adding new notice -->
+                    <div id="addNoticeModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <h2>Add New Notice</h2>
+                            <!-- Disabled by default -->
+                            <form id="addNoticeForm" action="/notices" method="post">
+                                <label for="description">Description:</label>
+                                <input type="text" id="description" name="description" required>
+                                <button type="submit">Add Notice</button>
+                            </form>
+
+                        </div>
+                    </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+
+
+            function confirmDelete(id) {
+                var isConfirmed = confirm('Are you sure you want to delete this notice?');
+                if (isConfirmed) {
+                    // Call the function to delete the notice
+                    dropNotice(id);
+                }
+            }
+
+            function dropNotice(id) {
+                $.ajax({
+                    url: '/notices/' + id,
+                    type: 'DELETE',
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+
+            // Get the modal
+            var modal = document.getElementById('addNoticeModal');
+            // Get the button that opens the modal
+            var btn = document.getElementById('addNoticeBtn');
+
+
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
+        </script>
+
+
+</body>
+
+</html>

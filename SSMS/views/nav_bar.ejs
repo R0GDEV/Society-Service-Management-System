@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    * {
+      font-family: "Raleway", sans-serif;
+    }
+
+    body,
+    html {
+     min-height: 100%;
+      line-height: 1.8;
+    }
+
+
+    .w3-bar .w3-button {
+      padding: 16px;
+    }
+
+    .w3-top {
+      font-weight: 400;
+    }
+
+    a.nav:hover {
+      background-color: aqua;
+      background-repeat: no-repeat;
+      background-size: 0 1px;
+      transition-behavior: normal;
+      transition-duration: 0.15s;
+      transition-timing-function: linear;
+      transition-delay: 0s;
+      transition-property: background-size;
+    }
+
+    .action {
+
+      background: #fff;
+      cursor: pointer;
+
+    }
+
+    .action span {
+      color: rgb(0, 0, 0);
+      width: 100%;
+
+      justify-content: center;
+      align-items: center;
+      transition: .3s ease-in-out;
+    }
+
+    .action .dropdown {
+      position: absolute;
+      right: 1vmax;
+      background: #fff;
+      min-width: 220px;
+      padding: 30px;
+      border-radius: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s;
+      box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+    }
+
+    .action.active .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transition: .3s;
+    }
+
+    .action .dropdown li {
+      list-style: none;
+      text-decoration: none;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 5px 0;
+    }
+
+    .action .dropdown li:hover {
+      font-weight: 600;
+    }
+
+    .action .dropdown li:not(:last-child) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo{
+      font-family: "Nabla", system-ui;
+  
+ 
+      font-size: 33px;
+  
+      padding: 8px;
+      
+    }
+  </style><link href="https://fonts.googleapis.com/css2?family=Nabla&display=swap" rel="stylesheet">
+  <script>
+    function actionToggle() {
+      const action = document.querySelector('.action');
+      action.classList.toggle('active')
+    }
+    function logout(){
+      window.location.href = "/login";
+    }
+  </script>
+</head>
+
+<body>
+  <div class="w3-top">
+    <div class="w3-bar w3-white w3-card" id="myNavbar">
+      <div class="w3-bar-item w3-wide logo" style="   padding: 0px 16px;">SSMS</div>
+      <!-- Right-sided navbar links -->
+      <div class="w3-right w3-hide-small">
+        <a href="/home" class="w3-bar-item w3-button" class="nav">HOME</a>
+        <a href="/notices" class="w3-bar-item w3-button">NOTICES</a>
+        <a href="/list" class="w3-bar-item w3-button"> MEMBER</a>
+        <a href="/MaintenanRequest" class="w3-bar-item w3-button">MAINTENAN</a>
+        <a href="/booking" class="w3-bar-item w3-button">BOOKING</a>
+        <a href="/Complanint" class="w3-bar-item w3-button">COMPLANINT</a>
+        <a class="action w3-bar-item w3-button" onclick="actionToggle();">
+          <span>ABOUT</span>
+          <ul class="dropdown">
+            <li>Work</li>
+            <li>Contact</li>
+            <li  onclick="logout()">Log Out</li>
+          </ul>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

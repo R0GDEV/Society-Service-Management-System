@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Maintenan List</title>
+    <style>
+        body {
+            margin: 0;
+         
+        }
+
+        .wrapper {
+            max-width: 80rem;
+            margin-top: 6%;
+            margin: 0 auto;
+        }
+
+        #data {
+            padding: 1.5rem 1.5rem 1.5rem 4em;
+            border: 0.3rem solid turquoise;
+            columns: 25rem;
+            column-gap: 7rem;
+            column-rule: 4px dotted turquoise;
+            border-radius: 0.5rem;
+         
+        }
+
+        ul>*+* {
+            margin-top: 1rem;
+        }
+
+        li {
+            break-inside: avoid;
+        }
+
+        ::marker {
+            content: counters(list-item, '') ': ';
+            font-weight: 700;
+            font-size: 1.5em;
+            color: turquoise;
+        }
+
+        li span {
+            display: block;
+        }
+
+        li span:first-child {
+            font-size: 1.5em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <%- include('nav_bar'); -%>
+        <br><br>
+        <div class="wrapper">
+            <h1>Maintenan Request List</h1><br>
+            <ul id="data">
+                <% Maintenan.forEach(notice=> { %>
+                    <li>
+                        <span><strong>Description:</strong>
+                            <%= notice.description %>
+                        </span>
+                        <span><strong>Type:</strong>
+                            <%= notice.Type %>
+                        </span>
+                        <span><strong>Name:</strong>
+                            <%= notice.username %>
+                        </span>
+                        <span><strong>Address:</strong>
+                                <%= notice.Room_no %>
+                        </span>
+                        <span><strong>Status :</strong>
+                            <%= notice.status%>
+                          </span>
+                        
+                            <span>
+                              <button onclick="changestatus('<%= notice._id %>')">solve</button></span></span>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function changestatus(id) {
+              console.log(id);
+                    $.ajax({
+                        url: '/request/' + id,
+                        type: 'PUT',
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+               
+        </script>
+</body>
+
+</html>

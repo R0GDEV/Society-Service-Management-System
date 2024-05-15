@@ -1,0 +1,195 @@
+<!-- notices.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Notices</title>
+    <style>
+        body{
+            background: radial-gradient(ellipse at bottom, #120463 0%, #01082e 100%);
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+
+          background-color: #868696;
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+         
+
+        }
+
+        th {
+            background-color: #a2e774;
+            font-size:large;
+        }
+
+        td {
+            background-color: lavender;
+            color: rgb(0, 0, 0);
+            font-weight: 580;
+            letter-spacing: 0.15em;
+        }
+
+        .wrapper {
+            max-width: 80rem;
+            margin-top: 6%;
+            margin: 0 auto;
+        }
+
+        button,
+        select {
+
+            padding: 0 2rem 0 2rem;
+            margin: 0 2.5rem 0 2.5rem;
+        }
+
+        dialog {
+            padding: 1rem 1.8rem;
+            --y: calc(100% - 2rem);
+            background: radial-gradient(circle at 30% var(--y), rgb(77, 2, 128), rgb(0, 0, 0));
+            
+            min-width: 45%;
+            min-height: 25%;
+            border-radius: 0.45em;
+            border: 0;
+            box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+            animation: fadeIn 1s ease both;
+
+            &::backdrop {
+                animation: fadeIn 1s ease both;
+                background: rgb(255 255 255 / 40%);
+                z-index: 2;
+                backdrop-filter: blur(20px);
+            }
+        }
+
+        label {
+            font-size: 1.2em;
+            font-weight: 900;
+            margin: 2% 0 2% 0;
+            color: ghostwhite;
+            
+        }
+
+        .x {
+            filter: grayscale(1);
+            border: none;
+            background: none;
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            transition: ease filter, transform 0.3s;
+            cursor: pointer;
+            transform-origin: center;
+
+            &:hover {
+                filter: grayscale(0);
+                transform: scale(1.1);
+            }
+
+        }
+     input { width: 50%;
+    
+    
+    }
+  
+    </style>
+</head>
+
+<body>
+    <%- include('nav_bar'); -%>
+        <div class="wrapper">
+            <h1 style=" padding: 5% 3% 0% 0%;  color: rgb(14, 255, 255);font: size 40px;;">Society Member</h1>
+            <% if (isAdmin) { %>
+                <button class="primary" onclick="window.dialog.showModal();">New User</button><br><br>
+                <% } %>
+                    <dialog id="dialog">
+                        <form action="/adduser" id="addn" method="post">
+                            <label for="Usernsme">Usernsme :</label>
+                            <input type="text" id="username" name="username" minlength="5" maxlength="10"
+                                title="Between 5 and 10 characters" required><br><br>
+                            <label>Password :</label>
+                            <input type="password" id="password" name="password" minlength="8" maxlength="10" required><br><br>
+                            <label>Role :</label>
+                            <select  id="role" name="role">
+                                <option value="Admin" selected>Admin</option>
+                                <option value="Service">Service</option>
+                            </select><br><br>
+                            <label>Email:</label>
+                            <input type="email" id="email" name="email" required><br><br>
+                            <input type="submit" style="width: auto;">
+                            <button onclick="window.dialog.close();" aria-label="close" class="x"
+                                type="button">❌</button>
+                        </form>
+                    </dialog>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Name Of Member</th>
+                                <th style="width: 30%;">E-mail</th>
+                                <th style="width: 15%;">Flat No.</th>
+                                <th style="width: 20%;">ROLE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user=> { %>
+                                <tr>
+                                    <td>
+                                        <%= user.username %>
+                                    </td>
+                                    <td>
+                                        <%= user.email %>
+                                    </td>
+                                    <td>
+                                        <%= user.flat_no %>
+                                    </td>
+                                    <td>
+                                        <% if (isAdmin) { %>
+                                            <select id="roleDropdown_<%= user._id %>">
+                                                <option value="Admin" <% if (user.role==="Admin" ) { %>selected<% } %>
+                                                        >Admin</option>
+                                                <option value="User" <% if (user.role==="User" ) { %>selected<% } %>
+                                                        >User</option>
+                                                <option value="Service" <% if (user.role==="Service" ) { %>selected<% }
+                                                        %>>Service</option>
+                                            </select>
+                                            <button onclick="updateRole('<%= user._id %>')">Save</button>
+                                            <% } else { %>
+                                                <%= user.role %>
+                                                    <% } %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function updateRole(userId) {
+                var newRole = $('#roleDropdown_' + userId).val();
+                $.ajax({
+                    url: '/users/' + userId + '/role',
+                    type: 'PUT',
+                    data: { role: newRole },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // Handle error
+                    }
+                });
+            }
+        </script>
+</body>
+
+</html>

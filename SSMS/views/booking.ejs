@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facility Booking</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .wrapper {
+            max-width: 80rem;
+            margin: 0 auto;
+            margin-top: 6%;
+        }
+
+        #data {
+
+            margin: 0 auto;
+
+            padding: 3% 1.5rem 1.5rem 4em;
+            border: 0.3rem solid turquoise;
+            columns: 30rem;
+            column-gap: 7rem;
+            column-rule: 4px dotted turquoise;
+            border-radius: 0.5rem;
+            max-width: 80rem;
+
+        }
+
+        ul>*+* {
+            margin-top: 1rem;
+        }
+
+        li {
+            break-inside: avoid;
+        }
+
+        ::marker {
+            content: counters(list-item, '') ': ';
+            font-weight: 700;
+            font-size: 1.5em;
+            color: turquoise;
+        }
+
+        li span {
+            display: block;
+        }
+
+        li span:first-child {
+            font-size: 1.5em;
+        }
+
+        li span:last-child {
+            font-style: italic;
+        }
+
+        #addn {
+            font-size: 1.2rem;
+            padding-bottom: 1rem;
+            padding-top: 1.5rem;
+        }
+
+        #description {
+            margin: 10px 0 10px 0;
+        }
+
+        dialog {
+            padding: 1rem 1.8rem;
+            background: white;
+            min-width: 50%;
+            min-height: 25%;
+            border-radius: 0.45em;
+            border: 0;
+            box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+            animation: fadeIn 1s ease both;
+
+            &::backdrop {
+                animation: fadeIn 1s ease both;
+                background: rgb(255 255 255 / 40%);
+                z-index: 2;
+                backdrop-filter: blur(20px);
+            }
+        }
+
+        label {
+            font-size: 1.2em;
+            font-weight: 900;
+            margin: 2% 0 2% 0;
+        }
+
+        button {
+            font-size: 1.2em;
+
+        }
+
+        .x {
+            filter: grayscale(1);
+            border: none;
+            background: none;
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            transition: ease filter, transform 0.3s;
+            cursor: pointer;
+            transform-origin: center;
+
+            &:hover {
+                filter: grayscale(0);
+                transform: scale(1.1);
+            }
+        }
+
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .modal-content {
+            transition: .3s;
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Include navigation bar -->
+    <%- include('nav_bar'); -%>
+        <div class="wrapper">
+            <h1>Booking Facility</h1>
+
+
+
+            <button class="primary" onclick="window.dialog.showModal();">Booking</button><br><br>
+
+            <dialog id="dialog">
+                <form id="addn">
+
+                    <label for="facility">Select Facility:</label>
+                    <select id="facility" name="facility">
+                        <option value="Clubhouse">Clubhouse</option>
+                        <option value="Swimming Pool">Swimming Pool</option>
+                        <option value="Tennis Court">Tennis Court</option>
+                        <option value="Basketball Court">Basketball Court</option>
+                        <option value="Volleyball Court">Volleyball Court</option>
+                        <option value="Cricket Pitch">Cricket Pitch</option>
+                        <option value="Game Room">Game Room</option>
+                        <option value="Computer Lab">Computer Lab</option>
+                        <option value="Art Studio">Art Studio</option>
+                        <option value="Meeting Room">Meeting Room</option>
+                        <option value="BBQ Area">BBQ Area</option>
+                        <option value="Library">Library</option>
+                        <option value="Spa">Spa</option>
+                        <option value="Roof Deck">Roof Deck</option>
+                        <option value="Cinema Room">Cinema Room</option>
+                        <option value="Study Room">Study Room</option>
+                        <option value="Event Hall">Event Hall</option>
+                        <option value="Lounge">Lounge</option>
+                        <option value="Car Wash Area">Car Wash Area</option>
+                        <option value="Laundry Room">Laundry Room</option>
+                        <option value="Concierge Desk">Concierge Desk</option>
+                        <option value="Rooftop Garden">Rooftop Garden</option>
+                        <option value="Fishing Pond">Fishing Pond</option>
+                        <option value="Boat Dock">Boat Dock</option>
+                    </select><br><br>
+                    <label>Date:</label>
+                    <input type="date" id="date" name="date" required><br><br>
+                    <label>Start Time:</label>
+                    <input type="time" id="startTime" name="startTime" required><br><br>
+                    <label for="endTime">End Time:</label>
+                    <input type="time" id="endTime" name="endTime" required><br><br>
+                    <input type="submit">
+                    <div id="errorMessage" style="color: red; display:none;">Facility already booked for this date and
+                        time</div>
+                    <button onclick="window.dialog.close();" aria-label="close" class="x" type="button">❌</button>
+
+                </form>
+            </dialog>
+            <ul id="data">
+                <% bookings.forEach(booking=> { %>
+                    <li>
+                        <span><strong>Facility:</strong>
+                            <%= booking.facility %>
+                        </span>
+                        <span><strong>Date:</strong>
+                            <%= booking.date %>
+                        </span>
+                        <span><strong>Time:</strong>
+                            <%= booking.startTime %> <strong> To </strong>
+                                <%= booking.endTime %>
+                        </span>
+                        <span><strong>By</strong>
+                            <%= booking.username %>
+                        </span>
+                    </li>
+                    <% }); %>
+            </ul>
+
+
+
+        </div>
+        <script>
+            document.getElementById('addn').addEventListener('submit', async function (event) {
+                event.preventDefault(); // Prevent default form submission
+                const formData = new FormData(this);
+                const { date, startTime, endTime, facility } = Object.fromEntries(formData);
+
+                try {
+                    const response = await fetch('/booking', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ date, startTime, endTime, facility })
+                    });
+                    if (!response.ok) {
+                        document.getElementById('errorMessage').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('errorMessage').style.display = 'none';
+                        }, 3000);
+                        //alert('Incorrect username or password'); // Display alert for incorrect password
+                    } else {
+                        location.reload();
+                        //window.location.href = '/'; // Redirect to dashboard on successful login
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        </script>
+</body>
+
+</html>

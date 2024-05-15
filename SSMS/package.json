@@ -1,0 +1,24 @@
+{
+  "name": "ssms",
+  "version": "1.0.0",
+  "description": "Sociaty Service Management",
+  "main": "App.js",
+  "scripts": {
+    "run": "App.js"
+  },
+  "author": "Om Sharma",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R0GDEV/Society-Service-Management-System.git"
+  },
+  "keywords": [
+    "MERN(MongoDB",
+    "ExpressJS",
+    "NodeJS)"
+  ],
+  "bugs": {
+    "url": "https://github.com/R0GDEV/Society-Service-Management-System/issues"
+  },
+  "homepage": "https://github.com/R0GDEV/Society-Service-Management-System#readme"
+}
